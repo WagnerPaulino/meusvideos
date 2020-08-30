@@ -3,20 +3,22 @@ from django.core.exceptions import ObjectDoesNotExist
 from meusvideosbackend.meusvideos.models import Usuario, Video, Resenha
 
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ModelField(model_field=Usuario()._meta.get_field('id'))
     class Meta:
         model = Usuario
-        fields = ['id', 'nome', 'username', 'password', 'dtNasciemento']
+        fields = ['id', "nome", "username", 'dtNasciemento']
         extra_kwargs = {
-            'password': {'write_only': True}
+            'username': {'validators': []},
         }
 
     def existsByUsername(self, usuario):
         try:
-            return Usuario.objects.get(username=usuario.get("username"))
-        except:
+            return Usuario.objects.get(pk=usuario.get("id"))
+        except Usuario.DoesNotExist:
             raise ObjectDoesNotExist("Usuario não existe! Cadastre-se!")
 
 class ResenhaSerializer(serializers.HyperlinkedModelSerializer):
+    id = serializers.ModelField(model_field=Resenha()._meta.get_field('id'))
     class Meta:
         model = Resenha
         fields = ['id', 'texto']
@@ -24,6 +26,7 @@ class ResenhaSerializer(serializers.HyperlinkedModelSerializer):
 class VideoSerializer(serializers.HyperlinkedModelSerializer):
     usuario = UsuarioSerializer(many=False)
     resenhas = ResenhaSerializer(many=True)
+    id = serializers.ModelField(model_field=Video()._meta.get_field('id'))
     class Meta:
         model = Video
         fields = ['id', 'url', 'nome', 'usuario', 'resenhas']

@@ -5,7 +5,7 @@ from django.db.models import Model
 class Usuario(Model):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
-    username = models.CharField(max_length=20)
+    username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=255)
     dtNasciemento = models.DateField(null=True, blank=True)
 
