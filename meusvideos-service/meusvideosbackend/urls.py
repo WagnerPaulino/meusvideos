@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.urls import include, path
 from rest_framework import routers
-from meusvideosbackend.meusvideos.views import UsuarioViewSet, VideoViewSet
+from meusvideosbackend.meusvideos.views import UsuarioViewSet, VideoViewSet, ResenhaViewSet
 
 router = routers.DefaultRouter()
 router.register(r'usuarios', UsuarioViewSet)
 router.register(r'videos', VideoViewSet)
+router.register(r'resenhas', ResenhaViewSet)
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
