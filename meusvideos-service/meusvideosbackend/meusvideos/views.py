@@ -19,6 +19,11 @@ class VideoViewSet(viewsets.ModelViewSet):
     queryset = Video.objects.all().order_by('id')
     serializer_class = VideoSerializer
 
+    def get_object(self):
+        queryset = self.filter_queryset(self.get_queryset())
+        return queryset
+
+
 class ResenhaViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows Usuarios to be viewed or edited.

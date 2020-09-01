@@ -2,8 +2,10 @@ from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from meusvideosbackend.meusvideos.models import Usuario, Video, Resenha
 
+
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ModelField(model_field=Usuario()._meta.get_field('id'))
+
     class Meta:
         model = Usuario
         fields = ['id', "nome", "username", 'dtNasciemento']
@@ -17,21 +19,25 @@ class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
         except Usuario.DoesNotExist:
             raise ObjectDoesNotExist("Usuario não existe! Cadastre-se!")
 
+
 class ResenhaSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ModelField(model_field=Resenha()._meta.get_field('id'))
+
     class Meta:
         model = Resenha
         fields = ['id', 'texto']
+
 
 class VideoSerializer(serializers.HyperlinkedModelSerializer):
     usuario = UsuarioSerializer(many=False)
     resenhas = ResenhaSerializer(many=True)
     id = serializers.ModelField(model_field=Video()._meta.get_field('id'))
+
     class Meta:
         model = Video
         fields = ['id', 'url', 'nome', 'usuario', 'resenhas']
 
-    def create(self, validated_data):
+    def create(self, validated_data, **keywords):
         usuarioSerializer = UsuarioSerializer()
         resenhas = validated_data.pop('resenhas')
         usuario = usuarioSerializer.existsByUsername(validated_data.pop('usuario'))
@@ -39,3 +45,12 @@ class VideoSerializer(serializers.HyperlinkedModelSerializer):
         for resenha in resenhas:
             Resenha.objects.create(video=video, **resenha)
         return video
+
+    def update(self, querySet, validated_data):
+        usuarioSerializer = UsuarioSerializer()
+        resenhas = validated_data.pop('resenhas')
+        usuario = usuarioSerializer.existsByUsername(validated_data.pop('usuario'))
+        Video.objects.filter(pk=validated_data["id"]).update(**validated_data, usuario=usuario)
+        for resenha in resenhas:
+            Resenha.objects.filter(pk=resenha["id"]).update(**resenha)
+        return Video.objects.get(pk=validated_data["id"])

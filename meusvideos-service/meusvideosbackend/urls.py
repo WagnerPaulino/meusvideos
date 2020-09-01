@@ -18,11 +18,24 @@ from rest_framework import routers
 from meusvideosbackend.meusvideos.views import UsuarioViewSet, VideoViewSet, ResenhaViewSet
 
 router = routers.DefaultRouter()
-router.register(r'usuarios', UsuarioViewSet)
-router.register(r'videos', VideoViewSet)
-router.register(r'resenhas', ResenhaViewSet)
+usuario_view_set = UsuarioViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+videos_view_set = VideoViewSet.as_view({
+    'get': 'list',
+    'post': 'create',
+    'put': 'update'
+})
+resenha_view_set = ResenhaViewSet.as_view({
+    'get': 'list',
+    'post': 'create'
+})
 
 urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path(r'videos/', videos_view_set, name="videos"),
+    path(r'usuarios/', usuario_view_set, name="usuarios"),
+    path(r'resenhas/', resenha_view_set, name="resenhas"),
 ]
