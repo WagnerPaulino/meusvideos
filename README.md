@@ -11,3 +11,7 @@ $ python manage.py makemigrations
 $ python manage.py migrate
 $ python manage.py runserver
 ```
+
+## Frameworks used
+* Django
+* Django Rest Framework
