@@ -12,6 +12,6 @@ $ python manage.py migrate
 $ python manage.py runserver
 ```
 
-## Frameworks used
+## Used frameworks
 * Django
 * Django Rest Framework
