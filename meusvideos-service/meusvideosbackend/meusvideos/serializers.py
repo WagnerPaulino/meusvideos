@@ -4,13 +4,13 @@ from meusvideosbackend.meusvideos.models import Usuario, Video, Resenha
 
 
 class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ModelField(model_field=Usuario()._meta.get_field('id'))
+    id = serializers.ModelField(model_field=Usuario()._meta.get_field('id'), required=False)
 
     class Meta:
         model = Usuario
         fields = ['id', "nome", "username", 'dtNasciemento']
         extra_kwargs = {
-            'username': {'validators': []},
+            'username': {'validators': []}
         }
 
     def existsByUsername(self, usuario):
@@ -21,7 +21,7 @@ class UsuarioSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ResenhaSerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ModelField(model_field=Resenha()._meta.get_field('id'))
+    id = serializers.ModelField(model_field=Resenha()._meta.get_field('id'), required=False)
 
     class Meta:
         model = Resenha
@@ -31,7 +31,7 @@ class ResenhaSerializer(serializers.HyperlinkedModelSerializer):
 class VideoSerializer(serializers.HyperlinkedModelSerializer):
     usuario = UsuarioSerializer(many=False)
     resenhas = ResenhaSerializer(many=True)
-    id = serializers.ModelField(model_field=Video()._meta.get_field('id'))
+    id = serializers.ModelField(model_field=Video()._meta.get_field('id'), required=False)
 
     class Meta:
         model = Video
