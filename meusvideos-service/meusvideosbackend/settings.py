@@ -38,13 +38,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
     'meusvideosbackend.meusvideos',
 ]
+
+AUTH_USER_MODEL = 'meusvideos.Usuario'
+USERNAME_FIELD = 'username'
+ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
+REST_USE_JWT = True
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
 MIDDLEWARE = [

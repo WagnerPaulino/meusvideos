@@ -1,13 +1,17 @@
 from django.db import models
 from django.db.models import Model
+from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import PermissionsMixin
 
 # Create your models here.
-class Usuario(Model):
+class Usuario(AbstractUser):
     id = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=255)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
     dtNasciemento = models.DateField(null=True, blank=True)
+
 
 class Video(Model):
     id = models.AutoField(primary_key=True)
