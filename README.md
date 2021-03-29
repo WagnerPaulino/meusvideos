@@ -41,7 +41,11 @@ curl --location --request POST 'http://127.0.0.1:8000/dj-rest-auth/login/' \
 ```
 
 * Request to some protected endpoint
-```
+```bash
 curl --location --request GET 'http://127.0.0.1:8000/videos' \
 --header 'Authorization: Bearer <token>'
 ```
+
+* Filter by a specific record
+curl --location --request GET 'http://127.0.0.1:8000/videos?nome=valorantGameplay' \
+--header 'Authorization: Bearer <token>'
