@@ -47,9 +47,13 @@ curl --location --request GET 'http://127.0.0.1:8000/videos' \
 ```
 
 * Filter by a specific record
+```bash
 curl --location --request GET 'http://127.0.0.1:8000/videos?nome=valorantGameplay' \
 --header 'Authorization: Bearer <token>'
+```
 
 * Search by a record
+```bash
 curl --location --request GET 'http://127.0.0.1:8000/videos?search=valorantGameplay' \
 --header 'Authorization: Bearer <token>'
+```
