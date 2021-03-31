@@ -28,8 +28,7 @@ usuario_view_set = UsuarioViewSet.as_view({
 })
 videos_view_set = VideoViewSet.as_view({
     'get': 'list',
-    'post': 'create',
-    'put': 'update'
+    'post': 'create'
 })
 resenha_view_set = ResenhaViewSet.as_view({
     'get': 'list',
@@ -37,13 +36,14 @@ resenha_view_set = ResenhaViewSet.as_view({
 })
 
 urlpatterns = [
-    path('dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('', include(router.urls)),
+    path(r'dj-rest-auth/', include('dj_rest_auth.urls')),
+    path(r'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path(r'api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path(r'api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(r'videos/<int:pk>/', VideoViewSet.as_view({'put': 'update'}), name="videos"),
     path(r'videos/', videos_view_set, name="videos"),
     path(r'usuarios/', usuario_view_set, name="usuarios"),
     path(r'resenhas/', resenha_view_set, name="resenhas"),
+    path(r'', include(router.urls))
 ]
