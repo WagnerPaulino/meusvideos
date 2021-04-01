@@ -43,7 +43,8 @@ class VideoSerializer(serializers.HyperlinkedModelSerializer):
         usuario = usuarioSerializer.existsByUsername(validated_data.pop('usuario'))
         video = Video.objects.create(usuario=usuario, **validated_data)
         for resenha in resenhas:
-            Resenha.objects.create(video=video, **resenha)
+            resenhaInst, created = Resenha.objects.get_or_create(**resenha, video=video)
+            video.resenhas.add(resenhaInst)
         return video
 
     def update(self, instance, validated_data):
@@ -51,9 +52,9 @@ class VideoSerializer(serializers.HyperlinkedModelSerializer):
         resenhas = validated_data.pop('resenhas')
         usuario = usuarioSerializer.existsByUsername(validated_data.pop('usuario'))
         Video.objects.filter(pk=validated_data["id"]).update(**validated_data, usuario=usuario)
+        video = Video.objects.get(pk=validated_data["id"])
+        video.resenhas.filter(video=video).delete()
         for resenha in resenhas:
-            if resenha.__contains__("id"):
-                Resenha.objects.filter(pk=resenha["id"]).update(**resenha)
-            else:
-                Resenha.objects.create(video=Video.objects.get(pk=validated_data["id"]), **resenha)
+            resenhasInst, created = Resenha.objects.get_or_create(**resenha, video=video)
+            video.resenhas.add(resenhasInst)
         return Video.objects.get(pk=validated_data["id"])
